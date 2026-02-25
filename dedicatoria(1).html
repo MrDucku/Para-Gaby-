@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Para ti 🌷</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&family=Cinzel:wght@400;600&family=Great+Vibes&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --pink: #f472b6;
+    --pink-light: #fce7f3;
+    --lavender: #c4b5fd;
+    --night: #060614;
+  }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--night);
+    font-family: 'Cormorant Garamond', serif;
+    color: #fff;
+    overflow-x: hidden;
+  }
+  #stars-canvas {
+    position: fixed; top: 0; left: 0;
+    width: 100%; height: 100%;
+    z-index: 0; pointer-events: none;
+  }
+  .nebula {
+    position: fixed; border-radius: 50%;
+    filter: blur(90px); opacity: 0.13;
+    z-index: 0; pointer-events: none;
+    animation: drift 18s ease-in-out infinite alternate;
+  }
+  .n1 { width:550px;height:380px;background:#be185d;top:-80px;left:-120px; }
+  .n2 { width:480px;height:480px;background:#6d28d9;bottom:-80px;right:-80px;animation-delay:-9s; }
+  .n3 { width:280px;height:280px;background:#9d174d;top:45%;left:55%;animation-delay:-4s; }
+  @keyframes drift {
+    from { transform:translate(0,0) scale(1); }
+    to   { transform:translate(25px,18px) scale(1.06); }
+  }
+  .moon {
+    position: fixed; top:50px; right:90px;
+    width:75px; height:75px; border-radius:50%;
+    background: radial-gradient(circle at 35% 35%, #fef9c3, #fde68a 45%, #fbbf24 85%);
+    box-shadow: 0 0 40px 14px rgba(253,230,138,.22), 0 0 80px 28px rgba(253,230,138,.1);
+    z-index: 2;
+    animation: moonPulse 5s ease-in-out infinite alternate;
+  }
+  .moon::before { content:''; position:absolute; top:10px;left:7px; width:11px;height:11px; border-radius:50%; background:rgba(0,0,0,.09); }
+  .moon::after  { content:''; position:absolute; top:27px;left:29px; width:7px;height:7px;  border-radius:50%; background:rgba(0,0,0,.07); }
+  @keyframes moonPulse {
+    from { box-shadow:0 0 40px 14px rgba(253,230,138,.18),0 0 80px 28px rgba(253,230,138,.08); }
+    to   { box-shadow:0 0 60px 22px rgba(253,230,138,.34),0 0 120px 50px rgba(253,230,138,.14); }
+  }
+  .shooting-star {
+    position: fixed; width:2px; height:2px; border-radius:50%;
+    background: white; box-shadow:0 0 4px 2px rgba(255,255,255,.6);
+    animation: shoot linear forwards; z-index:1; pointer-events:none;
+  }
+  @keyframes shoot {
+    0%   { transform:translate(0,0) scaleX(1); opacity:1; }
+    100% { transform:translate(280px,190px) scaleX(18); opacity:0; }
+  }
+  .wrapper {
+    position: relative; z-index:10;
+    min-height: 100vh;
+    display: flex; flex-direction:column; align-items:center;
+    padding: 70px 20px 100px;
+  }
+  .header {
+    text-align:center; margin-bottom:44px;
+    animation: fadeDown 1.2s ease forwards; opacity:0;
+  }
+  @keyframes fadeDown {
+    from { opacity:0; transform:translateY(-28px); }
+    to   { opacity:1; transform:translateY(0); }
+  }
+  .header h1 {
+    font-family:'Great Vibes', cursive;
+    font-size: clamp(3.2rem,7vw,5.5rem);
+    color: var(--pink-light);
+    letter-spacing:3px;
+    text-shadow: 0 0 40px rgba(244,114,182,.7), 0 0 80px rgba(244,114,182,.3);
+    line-height: 1.1;
+  }
+  .header .sub {
+    font-size:1rem; color:var(--lavender);
+    letter-spacing:6px; text-transform:uppercase;
+    margin-top:10px; opacity:.75;
+    font-family: 'Cinzel', serif;
+    font-weight: 400;
+  }
+  .garden {
+    display:flex; justify-content:center; gap:24px; flex-wrap:wrap;
+    margin:0 0 48px;
+    animation: fadeUp 1.5s ease .5s forwards; opacity:0;
+  }
+  @keyframes fadeUp {
+    from { opacity:0; transform:translateY(22px); }
+    to   { opacity:1; transform:translateY(0); }
+  }
+  .lily-wrap {
+    display:flex; flex-direction:column; align-items:center;
+    animation: sway 4s ease-in-out infinite;
+    transform-origin: bottom center;
+  }
+  .lily-wrap:nth-child(2) { animation-delay:-1.3s; }
+  .lily-wrap:nth-child(3) { animation-delay:-2.5s; transform:scale(1.2); }
+  .lily-wrap:nth-child(4) { animation-delay:-.7s; }
+  .lily-wrap:nth-child(5) { animation-delay:-1.9s; }
+  @keyframes sway {
+    0%,100% { transform:rotate(-2.5deg); }
+    50%     { transform:rotate(2.5deg); }
+  }
+  .lily-wrap:nth-child(3) {
+    animation-name: sway3;
+  }
+  @keyframes sway3 {
+    0%,100% { transform:scale(1.2) rotate(-2.5deg); }
+    50%     { transform:scale(1.2) rotate(2.5deg); }
+  }
+  .lily { width:80px; height:130px; filter:drop-shadow(0 0 10px rgba(236,72,153,.5)); }
+  .card {
+    background: rgba(255,255,255,.04);
+    border: 1px solid rgba(244,114,182,.18);
+    border-radius: 24px;
+    padding: 56px 60px 44px;
+    max-width: 760px; width:100%;
+    backdrop-filter: blur(14px);
+    box-shadow: 0 0 70px rgba(244,114,182,.07), inset 0 0 40px rgba(244,114,182,.03);
+    animation: fadeUp 1.5s ease 1s forwards; opacity:0;
+    min-height: 360px;
+    display: flex; flex-direction:column; align-items:center; justify-content:flex-start;
+  }
+  #typewriter-area {
+    width: 100%;
+    text-align: center;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding-bottom: 10px;
+  }
+  .typed-line {
+    font-size: clamp(1.4rem, 3vw, 1.75rem);
+    font-weight: 600;
+    font-family: 'Cormorant Garamond', serif;
+    line-height: 1.75;
+    color: rgba(255,255,255,.95);
+    text-align: center;
+    min-height: 1.75em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    letter-spacing: 0.03em;
+  }
+  .typed-line.em     { font-style:italic; color:#fce7f3; font-weight:600; font-size: clamp(1.5rem, 3.2vw, 1.9rem); }
+  .typed-line.bold   { font-weight:700; color:#fff; font-size: clamp(1.5rem, 3.2vw, 1.9rem); text-shadow: 0 0 20px rgba(244,114,182,.4); }
+  .typed-line.divider { color:var(--pink); letter-spacing:12px; font-size:1.1rem; opacity:.5; font-weight:400; }
+  .typed-line.firma  {
+    font-family:'Great Vibes', cursive;
+    font-size: clamp(2.2rem, 4.5vw, 3rem);
+    color:#fce7f3;
+    text-shadow: 0 0 30px rgba(244,114,182,.65), 0 0 60px rgba(244,114,182,.3);
+    font-weight: 400;
+    letter-spacing: 1px;
+  }
+  .typed-line.small  { font-size: clamp(1.1rem, 2.2vw, 1.3rem); color:#c4b5fd; font-style:italic; font-weight:400; }
+  .typed-line.heart-line { font-size:2.5rem; }
+  .cursor {
+    display: inline-block;
+    width: 2px; height: 1.1em;
+    background: var(--pink);
+    margin-left: 2px;
+    vertical-align: middle;
+    border-radius: 1px;
+    animation: blink .7s step-end infinite;
+    box-shadow: 0 0 6px var(--pink);
+    flex-shrink: 0;
+  }
+  @keyframes blink {
+    0%,100% { opacity:1; }
+    50%      { opacity:0; }
+  }
+  #progress {
+    display: flex; gap: 8px; justify-content:center;
+    margin-top: 24px;
+  }
+  .dot {
+    width: 7px; height: 7px; border-radius:50%;
+    background: rgba(244,114,182,.22);
+    transition: background .4s, transform .4s;
+  }
+  .dot.active { background: var(--pink); transform: scale(1.3); }
+  .dot.done   { background: rgba(244,114,182,.45); }
+  #replay-btn {
+    display: none;
+    margin-top: 22px;
+    background: none; border:1px solid rgba(244,114,182,.3);
+    color: rgba(244,114,182,.75); font-size:.85rem;
+    letter-spacing:3px; text-transform:uppercase;
+    padding: 8px 24px; border-radius:20px;
+    cursor: pointer; transition: all .3s;
+    font-family: 'Cinzel', serif;
+    font-weight: 400;
+  }
+  #replay-btn:hover { background:rgba(244,114,182,.1); color:var(--pink); }
+  .hearts { position:fixed; top:0;left:0; width:100%;height:100%; pointer-events:none; z-index:5; }
+  .hp {
+    position:absolute;
+    animation:floatH 4s ease forwards; opacity:0;
+  }
+  @keyframes floatH {
+    0%   { opacity:1; transform:translateY(0) scale(1); }
+    100% { opacity:0; transform:translateY(-200px) scale(.4); }
+  }
+  .bottom-row {
+    margin-top:56px;
+    animation: fadeUp 1.5s ease 2s forwards; opacity:0;
+  }
+  @media(max-width:500px){
+    .card { padding:30px 22px; }
+    .lily  { width:55px; height:90px; }
+    .garden { gap:14px; }
+  }
+  /* Marco de la imagen y contenedor */
+.profile-container {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 20px 0 40px; /* Espacio entre el título y las flores */
+  z-index: 5;
+}
+
+.profile-frame {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  border: 6px solid #702459; /* Color uva/rosa oscuro */
+  box-shadow: 0 0 25px 8px rgba(112, 36, 89, 0.7), 0 0 50px 15px rgba(244, 114, 182, 0.3);
+  overflow: hidden;
+  position: relative;
+  z-index: 2;
+  background: var(--night);
+}
+
+.profile-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Corazones que suben del marco */
+.profile-heart {
+  position: absolute;
+  bottom: 10px;
+  color: rgba(244, 114, 182, 0.5);
+  font-size: 1.2rem;
+  pointer-events: none;
+  z-index: 1;
+  animation: riseAndFade 4s ease-out forwards;
+}
+
+@keyframes riseAndFade {
+  0% { transform: translateY(0) scale(0.5); opacity: 0; }
+  20% { opacity: 0.7; }
+  100% { transform: translateY(-150px) translateX(var(--drift)) scale(1.2); opacity: 0; }
+}
+</style>
+</head>
+<body>
+
+<div class="nebula n1"></div>
+<div class="nebula n2"></div>
+<div class="nebula n3"></div>
+<div class="moon"></div>
+<canvas id="stars-canvas"></canvas>
+<div class="hearts" id="hearts"></div>
+
+<audio id="bg-music" loop>
+  <source src="Michael Jackson You Rock My World [LyricsSub español].mp3" type="audio/mpeg">
+</audio>
+
+<div class="wrapper">
+
+  <div class="header">
+    <h1>🌸🌷 Para Gaby 🌸🌷</h1>
+    <p class="sub">un presente con mucho cariño... espero te guste :> </p>
+  </div>
+<div class="profile-container" id="profile-area">
+  <div class="profile-frame">
+    <img src="Gaby.jpeg" alt="Gaby">
+  </div>
+</div>
+  <div class="garden">
+    <div class="lily-wrap">
+      <svg class="lily" viewBox="0 0 80 130" xmlns="http://www.w3.org/2000/svg">
+        <line x1="40" y1="90" x2="40" y2="130" stroke="#15803d" stroke-width="3.5" stroke-linecap="round"/>
+        <ellipse cx="28" cy="112" rx="14" ry="5" fill="#22c55e" transform="rotate(-32 28 112)"/>
+        <ellipse cx="40" cy="58" rx="11" ry="33" fill="#fbcfe8" opacity=".9" transform="rotate(-38 40 58)"/>
+        <ellipse cx="40" cy="58" rx="11" ry="33" fill="#f472b6" opacity=".8" transform="rotate(-19 40 58)"/>
+        <ellipse cx="40" cy="58" rx="11" ry="33" fill="#fbcfe8" opacity=".9" transform="rotate(0 40 58)"/>
+        <ellipse cx="40" cy="58" rx="11" ry="33" fill="#f472b6" opacity=".8" transform="rotate(19 40 58)"/>
+        <ellipse cx="40" cy="58" rx="11" ry="33" fill="#fbcfe8" opacity=".9" transform="rotate(38 40 58)"/>
+        <circle cx="40" cy="58" r="6" fill="#fde68a"/>
+        <line x1="40" y1="52" x2="35" y2="40" stroke="#fbbf24" stroke-width="1"/><circle cx="35" cy="39" r="2.2" fill="#f59e0b"/>
+        <line x1="40" y1="52" x2="43" y2="39" stroke="#fbbf24" stroke-width="1"/><circle cx="43" cy="38" r="2.2" fill="#f59e0b"/>
+        <line x1="40" y1="52" x2="46" y2="42" stroke="#fbbf24" stroke-width="1"/><circle cx="46" cy="41" r="2.2" fill="#f59e0b"/>
+      </svg>
+    </div>
+    <div class="lily-wrap">
+      <svg class="lily" viewBox="0 0 80 130">
+        <line x1="40" y1="88" x2="40" y2="130" stroke="#166534" stroke-width="3.5" stroke-linecap="round"/>
+        <ellipse cx="53" cy="108" rx="13" ry="5" fill="#4ade80" transform="rotate(30 53 108)"/>
+        <ellipse cx="40" cy="56" rx="12" ry="34" fill="#fce7f3" opacity=".95" transform="rotate(-42 40 56)"/>
+        <ellipse cx="40" cy="56" rx="12" ry="34" fill="#ec4899" opacity=".75" transform="rotate(-21 40 56)"/>
+        <ellipse cx="40" cy="56" rx="12" ry="34" fill="#fce7f3" opacity=".95" transform="rotate(0 40 56)"/>
+        <ellipse cx="40" cy="56" rx="12" ry="34" fill="#ec4899" opacity=".75" transform="rotate(21 40 56)"/>
+        <ellipse cx="40" cy="56" rx="12" ry="34" fill="#fce7f3" opacity=".95" transform="rotate(42 40 56)"/>
+        <circle cx="40" cy="56" r="6.5" fill="#fef08a"/>
+        <line x1="40" y1="49" x2="34" y2="36" stroke="#fbbf24" stroke-width="1.1"/><circle cx="34" cy="35" r="2.5" fill="#f59e0b"/>
+        <line x1="40" y1="49" x2="40" y2="34" stroke="#fbbf24" stroke-width="1.1"/><circle cx="40" cy="33" r="2.5" fill="#f59e0b"/>
+        <line x1="40" y1="49" x2="46" y2="37" stroke="#fbbf24" stroke-width="1.1"/><circle cx="46" cy="36" r="2.5" fill="#f59e0b"/>
+      </svg>
+    </div>
+    <div class="lily-wrap">
+      <svg class="lily" viewBox="0 0 80 130">
+        <line x1="40" y1="92" x2="40" y2="130" stroke="#14532d" stroke-width="4" stroke-linecap="round"/>
+        <ellipse cx="27" cy="106" rx="15" ry="5.5" fill="#22c55e" transform="rotate(-34 27 106)"/>
+        <ellipse cx="54" cy="116" rx="12" ry="4.5" fill="#4ade80" transform="rotate(26 54 116)"/>
+        <ellipse cx="40" cy="55" rx="13" ry="36" fill="#f9a8d4" opacity=".95" transform="rotate(-36 40 55)"/>
+        <ellipse cx="40" cy="55" rx="13" ry="36" fill="#db2777" opacity=".8" transform="rotate(-72 40 55)"/>
+        <ellipse cx="40" cy="55" rx="13" ry="36" fill="#f9a8d4" opacity=".95" transform="rotate(0 40 55)"/>
+        <ellipse cx="40" cy="55" rx="13" ry="36" fill="#db2777" opacity=".8" transform="rotate(36 40 55)"/>
+        <ellipse cx="40" cy="55" rx="13" ry="36" fill="#f9a8d4" opacity=".95" transform="rotate(72 40 55)"/>
+        <circle cx="40" cy="55" r="7.5" fill="#fde68a"/>
+        <line x1="40" y1="47" x2="33" y2="32" stroke="#fbbf24" stroke-width="1.3"/><circle cx="33" cy="31" r="3" fill="#f59e0b"/>
+        <line x1="40" y1="47" x2="40" y2="30" stroke="#fbbf24" stroke-width="1.3"/><circle cx="40" cy="29" r="3" fill="#f59e0b"/>
+        <line x1="40" y1="47" x2="47" y2="32" stroke="#fbbf24" stroke-width="1.3"/><circle cx="47" cy="31" r="3" fill="#f59e0b"/>
+      </svg>
+    </div>
+    <div class="lily-wrap">
+      <svg class="lily" viewBox="0 0 80 130">
+        <line x1="40" y1="88" x2="40" y2="130" stroke="#15803d" stroke-width="3.5" stroke-linecap="round"/>
+        <ellipse cx="52" cy="104" rx="13" ry="5" fill="#86efac" transform="rotate(28 52 104)"/>
+        <ellipse cx="40" cy="56" rx="11" ry="33" fill="#fbcfe8" opacity=".9" transform="rotate(-40 40 56)"/>
+        <ellipse cx="40" cy="56" rx="11" ry="33" fill="#f472b6" opacity=".78" transform="rotate(-20 40 56)"/>
+        <ellipse cx="40" cy="56" rx="11" ry="33" fill="#fbcfe8" opacity=".9" transform="rotate(0 40 56)"/>
+        <ellipse cx="40" cy="56" rx="11" ry="33" fill="#f472b6" opacity=".78" transform="rotate(20 40 56)"/>
+        <ellipse cx="40" cy="56" rx="11" ry="33" fill="#fbcfe8" opacity=".9" transform="rotate(40 40 56)"/>
+        <circle cx="40" cy="56" r="6" fill="#fef9c3"/>
+        <line x1="40" y1="50" x2="36" y2="38" stroke="#fbbf24" stroke-width="1"/><circle cx="36" cy="37" r="2" fill="#f59e0b"/>
+        <line x1="40" y1="50" x2="44" y2="37" stroke="#fbbf24" stroke-width="1"/><circle cx="44" cy="36" r="2" fill="#f59e0b"/>
+      </svg>
+    </div>
+    <div class="lily-wrap">
+      <svg class="lily" viewBox="0 0 80 130">
+        <line x1="40" y1="90" x2="40" y2="130" stroke="#166534" stroke-width="3.5" stroke-linecap="round"/>
+        <ellipse cx="29" cy="110" rx="13" ry="4.5" fill="#4ade80" transform="rotate(-30 29 110)"/>
+        <ellipse cx="40" cy="58" rx="10.5" ry="32" fill="#fce7f3" opacity=".9" transform="rotate(-38 40 58)"/>
+        <ellipse cx="40" cy="58" rx="10.5" ry="32" fill="#ec4899" opacity=".78" transform="rotate(-19 40 58)"/>
+        <ellipse cx="40" cy="58" rx="10.5" ry="32" fill="#fce7f3" opacity=".9" transform="rotate(0 40 58)"/>
+        <ellipse cx="40" cy="58" rx="10.5" ry="32" fill="#ec4899" opacity=".78" transform="rotate(19 40 58)"/>
+        <ellipse cx="40" cy="58" rx="10.5" ry="32" fill="#fce7f3" opacity=".9" transform="rotate(38 40 58)"/>
+        <circle cx="40" cy="58" r="5.5" fill="#fde68a"/>
+        <line x1="40" y1="52" x2="37" y2="41" stroke="#fbbf24" stroke-width="1"/><circle cx="37" cy="40" r="2" fill="#f59e0b"/>
+        <line x1="40" y1="52" x2="43" y2="40" stroke="#fbbf24" stroke-width="1"/><circle cx="43" cy="39" r="2" fill="#f59e0b"/>
+      </svg>
+    </div>
+  </div>
+
+  <div class="card" id="card">
+    <div id="typewriter-area"></div>
+    <div id="progress">
+      <div class="dot" id="dot-0"></div>
+      <div class="dot" id="dot-1"></div>
+      <div class="dot" id="dot-2"></div>
+      <div class="dot" id="dot-3"></div>
+      <div class="dot" id="dot-4"></div>
+      <div class="dot" id="dot-5"></div>
+    </div>
+  </div>
+
+  <button id="replay-btn" onclick="startTypewriter()">🌸 volver a ver 🌷</button>
+
+  <div class="bottom-row">
+    <p style="text-align:center;font-size:2rem;letter-spacing:12px;opacity:.7;">🌸 🌷 🌸 🌷 🌸</p>
+  </div>
+
+</div>
+
+<script>
+// Stars
+const canvas = document.getElementById('stars-canvas');
+const ctx = canvas.getContext('2d');
+let stars = [];
+function init() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  const n = Math.floor(canvas.width * canvas.height / 1600);
+  stars = Array.from({length:n}, () => ({
+    x: Math.random()*canvas.width, y: Math.random()*canvas.height,
+    r: Math.random()*1.8+.3, a: Math.random()*.7+.3,
+    da: (Math.random()*.018+.004) * (Math.random()>.5?1:-1),
+  }));
+}
+function draw() {
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  stars.forEach(s=>{
+    s.a += s.da;
+    if(s.a>1||s.a<.1) s.da*=-1;
+    ctx.beginPath(); ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
+    ctx.fillStyle=`rgba(255,255,255,${s.a})`; ctx.fill();
+  });
+  requestAnimationFrame(draw);
+}
+window.addEventListener('resize', init);
+init(); draw();
+
+// Shooting stars
+function shoot(){
+  const el=document.createElement('div');
+  el.className='shooting-star';
+  el.style.left=Math.random()*80+'%';
+  el.style.top=Math.random()*50+'%';
+  const d=Math.random()*.8+.5;
+  el.style.animationDuration=d+'s';
+  document.body.appendChild(el);
+  setTimeout(()=>el.remove(),d*1000+100);
+}
+setInterval(shoot,3200); shoot();
+
+// SCRIPT
+const SCRIPT = [
+  { dot: 0, lines: [{ text: "Este es lo que estaba haciendo... 🌙", cls: "" }, { text: "un presente como muestra de mi agradecimiento", cls: "em" }, { text: "y los sentimientos que te tengo.", cls: "" }], pauseAfter: 2800 },
+  { dot: 1, lines: [{ text: "En este corto tiempo que nos conocimos", cls: "" }, { text: "me llegaste a caer super bien...", cls: "em" }, { text: "que hasta nos hacemos llamadas muy seguido", cls: "" }, { text: "y hasta nos quedamos dormidos juntos 💤", cls: "bold" }], pauseAfter: 3000 },
+  { dot: 2, lines: [{ text: "Me encanta que seas así de detallista conmigo,", cls: "em" }, { text: "y si bien yo no creo serlo tanto...", cls: "" }, { text: "hacer esto para ti lo hace especial.", cls: "bold" }], pauseAfter: 2800 },
+  { dot: 3, lines: [{ text: "Intenté que este presente tuviera", cls: "" }, { text: "lo que a ti más te gusta:", cls: "" }, { text: "los lirios de color rosa 🌷", cls: "em" }, { text: "♡", cls: "heart-line" }], pauseAfter: 3200 },
+  { dot: 4, lines: [{ text: "✦  ✦  ✦", cls: "divider" }], pauseAfter: 1000 },
+  { dot: 5, lines: [{ text: "Con mucho cariño: David 💕", cls: "firma" }, { text: "jsjs... ya me está empezando a gustar como me llamas 🥺", cls: "small" }], pauseAfter: 0 }
+];
+
+const SPEED = 42;
+const SPEED_FAST = 18;
+const BETWEEN_LINES = 420;
+const CLEAR_FADE = 500;
+let twTimer = null;
+let stopped = false;
+
+function setDot(idx) {
+  document.querySelectorAll('.dot').forEach((d,i) => {
+    d.classList.remove('active','done');
+    if(i < idx) d.classList.add('done');
+    else if(i === idx) d.classList.add('active');
+  });
+}
+
+function typeText(el, text, speed) {
+  return new Promise(resolve => {
+    const chars = Array.from(text);
+    let i = 0;
+    const cursor = el.querySelector('.cursor');
+    function tick() {
+      if(stopped) return;
+      if(i < chars.length) {
+        const cp = chars[i];
+        el.insertBefore(document.createTextNode(cp), cursor);
+        i++;
+        const extra = /[.,!?…]/.test(cp) ? speed * 5 : 0;
+        twTimer = setTimeout(tick, speed + extra);
+      } else { resolve(); }
+    }
+    tick();
+  });
+}
+
+async function runBlock(blockIdx) {
+  if(stopped || blockIdx >= SCRIPT.length) return;
+  const block = SCRIPT[blockIdx];
+  const area = document.getElementById('typewriter-area');
+  setDot(block.dot);
+  for(let li = 0; li < block.lines.length; li++) {
+    if(stopped) return;
+    const { text, cls } = block.lines[li];
+    const lineEl = document.createElement('div');
+    lineEl.className = 'typed-line' + (cls ? ' ' + cls : '');
+    const cursor = document.createElement('span');
+    cursor.className = 'cursor';
+    lineEl.appendChild(cursor);
+    area.appendChild(lineEl);
+    const speed = cls === 'divider' || cls === 'heart-line' ? SPEED_FAST : SPEED;
+    await typeText(lineEl, text, speed);
+    const isLastLine = li === block.lines.length - 1;
+    if(!isLastLine) {
+      cursor.remove();
+      await pause(BETWEEN_LINES);
+    }
+  }
+  if(block.pauseAfter === 0) {
+    document.getElementById('replay-btn').style.display = 'inline-block';
+    return;
+  }
+  const lastCursor = area.querySelector('.cursor');
+  if(lastCursor) lastCursor.remove();
+  await pause(block.pauseAfter);
+  if(stopped) return;
+  area.style.transition = `opacity ${CLEAR_FADE}ms ease`;
+  area.style.opacity = '0';
+  await pause(CLEAR_FADE);
+  if(stopped) return;
+  area.innerHTML = '';
+  area.style.opacity = '1';
+  await pause(200);
+  runBlock(blockIdx + 1);
+}
+
+function pause(ms) {
+  return new Promise(r => { twTimer = setTimeout(r, ms); });
+}
+
+function startTypewriter() {
+  stopped = true;
+  clearTimeout(twTimer);
+  const area = document.getElementById('typewriter-area');
+  area.style.transition = '';
+  area.style.opacity = '1';
+  area.innerHTML = '';
+  document.getElementById('replay-btn').style.display = 'none';
+  setDot(-1);
+  stopped = false;
+  setTimeout(() => runBlock(0), 300);
+}
+
+setTimeout(startTypewriter, 2400);
+
+// LOGICA DE MUSICA Y CORAZONES ACTUALIZADA
+const emojis=['💕','🌸','💗','✨','🌷','💖','🩷'];
+document.addEventListener('click', e => {
+  // Iniciar musica al hacer clic
+  const music = document.getElementById('bg-music');
+  if (music.paused) {
+    music.volume = 0.10; // Volumen al 50%
+    music.play();
+  }
+
+  // Generar corazones
+  for(let i=0;i<5;i++){
+    const h=document.createElement('div');
+    h.className='hp';
+    h.textContent=emojis[Math.floor(Math.random()*emojis.length)];
+    h.style.cssText=`left:${e.clientX+(Math.random()-.5)*50}px;top:${e.clientY}px;font-size:${Math.random()*.8+.9}rem;animation-duration:${Math.random()*1.5+2.5}s;animation-delay:${Math.random()*.25}s`;
+    document.getElementById('hearts').appendChild(h);
+    setTimeout(()=>h.remove(),4500);
+  }
+  // Generador de corazones para el marco de Gaby
+function createProfileHearts() {
+  const container = document.getElementById('profile-area');
+  if (!container) return;
+
+  const h = document.createElement('div');
+  h.className = 'profile-heart';
+  h.innerHTML = '❤';
+  
+  // Posición aleatoria horizontal dentro del marco
+  const randomX = (Math.random() - 0.5) * 120;
+  h.style.left = `calc(50% + ${randomX}px)`;
+  
+  // Dirección aleatoria del desvanecimiento
+  const drift = (Math.random() - 0.5) * 80;
+  h.style.setProperty('--drift', `${drift}px`);
+  
+  h.style.animationDuration = (3 + Math.random() * 2) + 's';
+  
+  container.appendChild(h);
+  
+  // Limpiar el elemento después de la animación
+  setTimeout(() => h.remove(), 4000);
+}
+
+// Iniciar la lluvia de corazones del marco
+setInterval(createProfileHearts, 700);
+});
+</script>
+</body>
+</html>
